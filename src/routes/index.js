@@ -28,4 +28,12 @@ router.post("/api/resources/test/edit_test", testResource.editTest);
 // question
 router.post("/api/resources/question/get_questions", questionResource.getQuestions);
 
+// test history
+router.post("/api/resources/test_history/get_test_history", questionResource.getQuestions);
+router.post("/api/resources/test_history/add_test_history", questionResource.getQuestions);
+
+// books
+
+// audios
+
 module.exports = router;
