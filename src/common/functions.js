@@ -26,7 +26,10 @@ const db = {
     const value_list = Object.values(data)
       .map((item) => (typeof item === "string" ? `'${item}'` : item))
       .join();
-    return `INSERT INTO ${table} (${column_list}) VALUES (${value_list})`;
+    return `
+      INSERT INTO ${table} (${column_list}) 
+      VALUES (${value_list})
+    `;
   },
   genUpdateQuery: function (data, table, condition) {
     const values = Object.keys(data)
@@ -34,10 +37,17 @@ const db = {
         typeof data[key] === "string" ? `${key} = '${data[key]}'` : `${key} = ${data[key]}`
       )
       .join();
-    return `UPDATE ${table} SET ${values} WHERE TRUE ${condition}`;
+    return `
+      UPDATE ${table} 
+      SET ${values} 
+      WHERE TRUE ${condition}
+    `;
   },
   genDeleteQuery: function (condition, table) {
-    return `DELETE FROM ${table} WHERE TRUE ${condition}`;
+    return `
+      DELETE FROM ${table} 
+      WHERE TRUE ${condition}
+    `;
   },
 };
 

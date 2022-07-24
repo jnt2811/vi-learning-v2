@@ -1,6 +1,5 @@
 const table = require("../config/table_names");
 const { db } = require("../common/functions");
-const table_names = require("../config/table_names");
 
 function Repository() {
   this.queryLessons = queryLessons;
@@ -35,7 +34,7 @@ async function insertLesson(data, course_id) {
   try {
     data.id = db.genID("LES");
     data.course_id = course_id;
-    const sql = db.genInsertQuery(data, table_names.LESSON);
+    const sql = db.genInsertQuery(data, table.LESSON);
     return await db.query(sql);
   } catch (err) {
     throw err;
@@ -45,7 +44,7 @@ async function insertLesson(data, course_id) {
 async function deleteLessons(course_id) {
   try {
     const condition = `AND course_id = '${course_id}'`;
-    const sql = db.genDeleteQuery(condition, table_names.LESSON);
+    const sql = db.genDeleteQuery(condition, table.LESSON);
 
     return await db.query(sql);
   } catch (err) {

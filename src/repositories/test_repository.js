@@ -2,25 +2,24 @@ const table = require("../config/table_names");
 const { db } = require("../common/functions");
 
 function Repository() {
-  this.queryUsers = queryUsers;
-  this.insertUser = insertUser;
-  this.updateUser = updateUser;
+  this.queryTests = queryTests;
+  this.insertTest = insertTest;
+  this.updateTest = updateTest;
 }
 
-async function queryUsers(input) {
+async function queryTests(input) {
   try {
-    const { username, id, role, active } = input;
+    const { id, active, created_by } = input;
 
     let condition = "and visible = 1";
 
-    if (!!username) condition += ` and username = '${username}'`;
     if (!!id) condition += ` and id = '${id}'`;
-    if (!!role) condition += ` and role = '${role}'`;
     if (!!active) condition += ` and active = ${active}`;
+    if (!!created_by) condition += ` and created_by = '${created_by}'`;
 
     const sql = `
       select *
-      from ${table.USER} 
+      from ${table.TEST} 
       where true ${condition}
     `;
 
@@ -32,9 +31,9 @@ async function queryUsers(input) {
   }
 }
 
-async function insertUser(data) {
+async function insertTest(data) {
   try {
-    const sql = db.genInsertQuery(data, table.USER);
+    const sql = db.genInsertQuery(data, table.TEST);
 
     return await db.query(sql);
   } catch (err) {
@@ -42,11 +41,13 @@ async function insertUser(data) {
   }
 }
 
-async function updateUser(data) {
+async function updateTest(data) {
   try {
     const condition = `AND id = '${data.id}'`;
+
     delete data.id;
-    const sql = db.genUpdateQuery(data, table.USER, condition);
+
+    const sql = db.genUpdateQuery(data, table.TEST, condition);
 
     return await db.query(sql);
   } catch (err) {

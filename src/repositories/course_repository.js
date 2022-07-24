@@ -1,6 +1,5 @@
 const table = require("../config/table_names");
 const { db } = require("../common/functions");
-const table_names = require("../config/table_names");
 
 function Repository() {
   this.queryCourses = queryCourses;
@@ -16,7 +15,7 @@ async function queryCourses(input) {
 
     if (!!id) condition += ` and id = '${id}'`;
     if (!!active) condition += ` and active = ${active}`;
-    if (!!created_by) condition += ` and created_by = ${created_by}`;
+    if (!!created_by) condition += ` and created_by = '${created_by}'`;
 
     const sql = `
       select *
@@ -34,7 +33,7 @@ async function queryCourses(input) {
 
 async function insertCourse(data) {
   try {
-    const sql = db.genInsertQuery(data, table_names.COURSE);
+    const sql = db.genInsertQuery(data, table.COURSE);
 
     return await db.query(sql);
   } catch (err) {
@@ -48,7 +47,7 @@ async function updateCourse(data) {
 
     delete data.id;
 
-    const sql = db.genUpdateQuery(data, table_names.COURSE, condition);
+    const sql = db.genUpdateQuery(data, table.COURSE, condition);
 
     return await db.query(sql);
   } catch (err) {

@@ -45,16 +45,17 @@ async function editCourse(req, res, next) {
 
     if (!id) return res.status(403).json("course/id-not-found");
 
-    const list_lesson = lessons || [];
+    const list_lesson = lessons;
 
     delete req.body.created_by;
     delete req.body.lessons;
 
     await courseRepository.updateCourse(req.body);
 
-    await lessonRepository.deleteLessons(id);
-
-    await Promise.all(list_lesson.map((item) => lessonRepository.insertLesson(item, id)));
+    if (!!list_lesson && list_lesson?.length > 0) {
+      await lessonRepository.deleteLessons(id);
+      await Promise.all(list_lesson.map((item) => lessonRepository.insertLesson(item, id)));
+    }
 
     res.sendStatus(200);
   } catch (err) {
