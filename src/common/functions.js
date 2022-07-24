@@ -36,6 +36,9 @@ const db = {
       .join();
     return `UPDATE ${table} SET ${values} WHERE TRUE ${condition}`;
   },
+  genDeleteQuery: function (condition, table) {
+    return `DELETE FROM ${table} WHERE TRUE ${condition}`;
+  },
 };
 
 function createToken(user) {

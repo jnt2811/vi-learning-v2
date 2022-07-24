@@ -45,7 +45,9 @@ async function insertCourse(data) {
 async function updateCourse(data) {
   try {
     const condition = `AND id = '${data.id}'`;
+
     delete data.id;
+
     const sql = db.genUpdateQuery(data, table_names.COURSE, condition);
 
     return await db.query(sql);
