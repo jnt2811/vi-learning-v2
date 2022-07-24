@@ -3,25 +3,23 @@ const { db } = require("../common/functions");
 const table_names = require("../config/table_names");
 
 function Repository() {
-  this.queryUsers = queryUsers;
-  this.insertUser = insertUser;
-  this.updateUser = updateUser;
+  this.queryLessons = queryLessons;
+  this.insertLesson = insertLesson;
+  this.updateLesson = updateLesson;
 }
 
-async function queryUsers(input) {
+async function queryLessons(input) {
   try {
-    const { username, id, role, active } = input;
+    const { id, course_id } = input;
 
     let condition = "and visible = 1";
 
-    if (!!username) condition += ` and username = '${username}'`;
     if (!!id) condition += ` and id = '${id}'`;
-    if (!!role) condition += ` and role = '${role}'`;
-    if (!!active) condition += ` and active = ${active}`;
+    if (!!course_id) condition += ` and course_id = ${course_id}`;
 
     const sql = `
       select *
-      from ${table.USER} 
+      from ${table.LESSON} 
       where true ${condition}
     `;
 
@@ -33,9 +31,9 @@ async function queryUsers(input) {
   }
 }
 
-async function insertUser(data) {
+async function insertLesson(data) {
   try {
-    const sql = db.genInsertQuery(data, table_names.USER);
+    const sql = db.genInsertQuery(data, table_names.LESSON);
 
     return await db.query(sql);
   } catch (err) {
@@ -43,11 +41,11 @@ async function insertUser(data) {
   }
 }
 
-async function updateUser(data) {
+async function updateLesson(data) {
   try {
     const condition = `AND id = '${data.id}'`;
     delete data.id;
-    const sql = db.genUpdateQuery(data, table_names.USER, condition);
+    const sql = db.genUpdateQuery(data, table_names.LESSON, condition);
 
     return await db.query(sql);
   } catch (err) {

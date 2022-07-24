@@ -1,4 +1,5 @@
 const userRepository = require("../repositories/user_repository");
+const { db } = require("../common/functions");
 const { createToken } = require("../common/functions");
 
 function Resource() {
@@ -48,6 +49,8 @@ async function addUser(req, res, next) {
     let result = await userRepository.queryUsers({ username });
 
     if (result.length > 0) return res.status(403).json("user/username-already-exists");
+
+    req.body.id = db.genID("USR");
 
     await userRepository.insertUser(req.body);
 
