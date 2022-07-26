@@ -11,16 +11,18 @@ async function queryCourses(input) {
   try {
     const { id, active, created_by } = input;
 
-    let condition = "and visible = 1";
+    let condition = `and ${table.COURSE}.visible = 1`;
 
-    if (!!id) condition += ` and id = '${id}'`;
-    if (!!active) condition += ` and active = ${active}`;
-    if (!!created_by) condition += ` and created_by = '${created_by}'`;
+    if (!!id) condition += ` and ${table.COURSE}.id = '${id}'`;
+    if (!!active) condition += ` and ${table.COURSE}.active = ${active}`;
+    if (!!created_by) condition += ` and ${table.COURSE}.created_by = '${created_by}'`;
 
     const sql = `
-      select *
+      select ${table.COURSE}.*, sum((case when ${table.LESSON}.course_id is not null then 1 else 0 end)) as total_lessons
       from ${table.COURSE} 
-      where true ${condition}
+      left join ${table.LESSON} on ${table.COURSE}.id = ${table.LESSON}.course_id
+      group by ${table.COURSE}.id
+      having true ${condition}
     `;
 
     const [result] = await db.query(sql);
