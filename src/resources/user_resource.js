@@ -25,7 +25,7 @@ async function login(req, res, next) {
     delete user.username;
     delete user.password;
 
-    const token = createToken(user);
+    const token = createToken({ id: user.id });
 
     res.json({ token, user });
   } catch (err) {
@@ -61,7 +61,7 @@ async function addUser(req, res, next) {
     delete user.username;
     delete user.password;
 
-    const token = createToken(user);
+    const token = createToken({ id: user.id });
 
     res.json({ token, user });
   } catch (err) {
