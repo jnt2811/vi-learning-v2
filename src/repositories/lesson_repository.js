@@ -20,6 +20,7 @@ async function queryLessons(input) {
       select *
       from ${table.LESSON} 
       where true ${condition}
+      order by order_number ASC
     `;
 
     const [result] = await db.query(sql);
